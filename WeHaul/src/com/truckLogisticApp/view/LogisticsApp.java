@@ -16,7 +16,8 @@ import javax.swing.table.DefaultTableModel;
 
 /**
  *
- * @author aarohnkhadka
+ * @author Aarohn Narsingh Khadka
+ * LMU ID: 23048510
  */
 public class LogisticsApp extends javax.swing.JFrame {
 
