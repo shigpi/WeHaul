@@ -10,6 +10,7 @@ import java.util.ArrayList;
 /**
  *
  * @author Aarohn Narsingh Khadka
+ * LMU ID: 23048510
  */
 public class UserModel {
     private int usrId;

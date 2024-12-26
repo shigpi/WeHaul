@@ -6,7 +6,8 @@ package com.truckLogisticApp.model;
 
 /**
  *
- * @author aarohnkhadka
+ * @author Aarohn Narsingh Khadka
+ * LMU ID: 23048510
  */
 public class TruckModel {
     private int truckId;
