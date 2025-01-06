@@ -4,20 +4,24 @@
  */
 package com.truckLogisticApp.view;
 
+import com.truckLogisticApp.controller.algorithms.BinarySearch;
 import com.truckLogisticApp.model.OrderModel;
 import com.truckLogisticApp.model.UserModel;
 import com.truckLogisticApp.model.TruckModel;
+import com.truckLogisticApp.controller.algorithms.SelectionSort;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+//External Info
+import java.util.stream.Collectors;
+
 
 /**
  *
- * @author Aarohn Narsingh Khadka
- * LMU ID: 23048510
+ * @author aarohnkhadka
  */
 public class LogisticsApp extends javax.swing.JFrame {
 
@@ -67,15 +71,17 @@ public class LogisticsApp extends javax.swing.JFrame {
         logoIngLabel3 = new javax.swing.JLabel();
         logoutButton2 = new javax.swing.JButton();
         jTabbedPane2 = new javax.swing.JTabbedPane();
+        jPanel5 = new javax.swing.JPanel();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        jTable2 = new javax.swing.JTable();
         jPanel1 = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
         userTable = new javax.swing.JTable();
         removeUserButton = new javax.swing.JButton();
         addUserButton = new javax.swing.JButton();
         updateInfoButton = new javax.swing.JButton();
-        jPanel5 = new javax.swing.JPanel();
-        jScrollPane3 = new javax.swing.JScrollPane();
-        jTable2 = new javax.swing.JTable();
+        sortUsrButton = new javax.swing.JButton();
+        searchUsrButton = new javax.swing.JButton();
         loginPanel = new javax.swing.JPanel();
         truckImgLabel = new javax.swing.JLabel();
         credentialPanel = new javax.swing.JPanel();
@@ -296,6 +302,7 @@ public class LogisticsApp extends javax.swing.JFrame {
         );
 
         adminPanel.setBackground(new java.awt.Color(0, 0, 133));
+        adminPanel.setMaximumSize(new java.awt.Dimension(1000, 600));
 
         topPanel2.setBackground(new java.awt.Color(25, 34, 75));
 
@@ -333,6 +340,40 @@ public class LogisticsApp extends javax.swing.JFrame {
 
         jTabbedPane2.setBackground(new java.awt.Color(254, 254, 227));
         jTabbedPane2.setForeground(new java.awt.Color(0, 0, 133));
+        jTabbedPane2.setMaximumSize(new java.awt.Dimension(994, 508));
+        jTabbedPane2.setMinimumSize(new java.awt.Dimension(994, 508));
+
+        jTable2.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "UserID", "Date", "Pick Up", "Drop"
+            }
+        ));
+        jScrollPane3.setViewportView(jTable2);
+
+        javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
+        jPanel5.setLayout(jPanel5Layout);
+        jPanel5Layout.setHorizontalGroup(
+            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel5Layout.createSequentialGroup()
+                .addGap(92, 92, 92)
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 812, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(90, Short.MAX_VALUE))
+        );
+        jPanel5Layout.setVerticalGroup(
+            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel5Layout.createSequentialGroup()
+                .addGap(28, 28, 28)
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(18, Short.MAX_VALUE))
+        );
+
+        jTabbedPane2.addTab("Recent Bookings", jPanel5);
 
         jPanel1.setBackground(new java.awt.Color(0, 0, 143));
 
@@ -379,68 +420,67 @@ public class LogisticsApp extends javax.swing.JFrame {
             }
         });
 
+        sortUsrButton.setBackground(new java.awt.Color(255, 255, 227));
+        sortUsrButton.setFont(new java.awt.Font("Helvetica Neue", 1, 24)); // NOI18N
+        sortUsrButton.setForeground(new java.awt.Color(25, 33, 75));
+        sortUsrButton.setText("Sort");
+        sortUsrButton.setBorderPainted(false);
+        sortUsrButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                sortUsrButtonActionPerformed(evt);
+            }
+        });
+
+        searchUsrButton.setBackground(new java.awt.Color(255, 255, 227));
+        searchUsrButton.setFont(new java.awt.Font("Helvetica Neue", 1, 24)); // NOI18N
+        searchUsrButton.setForeground(new java.awt.Color(25, 33, 75));
+        searchUsrButton.setText("Search");
+        searchUsrButton.setBorderPainted(false);
+        searchUsrButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                searchUsrButtonActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(69, 69, 69)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(removeUserButton)
-                        .addGap(82, 82, 82)
-                        .addComponent(addUserButton, javax.swing.GroupLayout.PREFERRED_SIZE, 195, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(93, 93, 93)
-                        .addComponent(updateInfoButton, javax.swing.GroupLayout.PREFERRED_SIZE, 215, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(addUserButton, javax.swing.GroupLayout.PREFERRED_SIZE, 171, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(52, 52, 52)
+                        .addComponent(updateInfoButton, javax.swing.GroupLayout.PREFERRED_SIZE, 177, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(57, 57, 57)
+                        .addComponent(sortUsrButton, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 846, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(73, Short.MAX_VALUE))
+                .addContainerGap(79, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(searchUsrButton, javax.swing.GroupLayout.PREFERRED_SIZE, 171, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(397, 397, 397))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(25, 25, 25)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 231, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(57, 57, 57)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(removeUserButton, javax.swing.GroupLayout.DEFAULT_SIZE, 74, Short.MAX_VALUE)
-                    .addComponent(updateInfoButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(addUserButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap(80, Short.MAX_VALUE))
+                .addGap(30, 30, 30)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(removeUserButton, javax.swing.GroupLayout.PREFERRED_SIZE, 74, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(addUserButton, javax.swing.GroupLayout.PREFERRED_SIZE, 74, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(updateInfoButton, javax.swing.GroupLayout.PREFERRED_SIZE, 74, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(sortUsrButton, javax.swing.GroupLayout.PREFERRED_SIZE, 78, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(searchUsrButton, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(50, Short.MAX_VALUE))
         );
 
         jTabbedPane2.addTab("Users", jPanel1);
-
-        jTable2.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
-            },
-            new String [] {
-                "UserID", "Date", "Pick Up", "Drop"
-            }
-        ));
-        jScrollPane3.setViewportView(jTable2);
-
-        javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
-        jPanel5.setLayout(jPanel5Layout);
-        jPanel5Layout.setHorizontalGroup(
-            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel5Layout.createSequentialGroup()
-                .addGap(92, 92, 92)
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 812, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(84, Short.MAX_VALUE))
-        );
-        jPanel5Layout.setVerticalGroup(
-            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel5Layout.createSequentialGroup()
-                .addGap(28, 28, 28)
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(12, Short.MAX_VALUE))
-        );
-
-        jTabbedPane2.addTab("Recent Bookings", jPanel5);
 
         javax.swing.GroupLayout adminPanelLayout = new javax.swing.GroupLayout(adminPanel);
         adminPanel.setLayout(adminPanelLayout);
@@ -449,16 +489,14 @@ public class LogisticsApp extends javax.swing.JFrame {
             .addComponent(topPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(adminPanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jTabbedPane2)
-                .addContainerGap())
+                .addComponent(jTabbedPane2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         adminPanelLayout.setVerticalGroup(
             adminPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(adminPanelLayout.createSequentialGroup()
                 .addComponent(topPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jTabbedPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 502, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                .addComponent(jTabbedPane2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -929,40 +967,103 @@ public class LogisticsApp extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_removeUserButtonActionPerformed
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(LogisticsApp.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(LogisticsApp.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(LogisticsApp.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(LogisticsApp.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+    private void sortUsrButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sortUsrButtonActionPerformed
+        // TODO add your handling code here:
+        
+        if (userList.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "No users to sort.");
+            return;
         }
-        //</editor-fold>
 
-        /* Create and display the form */
+        String[] options = {"Sort by ID", "Sort by Name"};
+        String selectedCriteria = (String) JOptionPane.showInputDialog(
+            this, 
+            "Select Sorting Criteria:", 
+            "Sorting Options", 
+            JOptionPane.PLAIN_MESSAGE, 
+            null, 
+            options, 
+            options[0]
+        );
+
+        if (selectedCriteria == null) {
+            return;
+        }
+
+        int orderSelection = JOptionPane.showConfirmDialog(
+            this, 
+            "Sort in Descending Order?", 
+            "Sorting Order", 
+            JOptionPane.YES_NO_OPTION
+        );
+        boolean isDescending = (orderSelection == JOptionPane.YES_OPTION);
+
+        // Initialize sortedData to avoid "might not be initialized" error
+        List<UserModel> sortedData = new ArrayList<>();
+
+        SelectionSort sorter = new SelectionSort();
+        if (selectedCriteria.equals("Sort by ID")) {
+            sortedData = sorter.sortByUserId(userList, isDescending);
+        } else if (selectedCriteria.equals("Sort by Name")) {
+            sortedData = sorter.sortByUserName(userList, isDescending);
+        }
+
+        DefaultTableModel tableModel = (DefaultTableModel) userTable.getModel();
+        tableModel.setRowCount(0);  // Clear the table before re-populating
+
+        for (UserModel user : sortedData) {
+            String orders = user.getUsrOrders().stream()
+                .map(order -> order.getPickupLocation() + " to " + order.getDropoffLocation())
+                .reduce((o1, o2) -> o1 + ", " + o2)
+                .orElse("No Orders");
+
+            tableModel.addRow(new Object[]{
+                user.getUsrId(),
+                user.getUsrName(),
+                user.getUsrSex(),
+                user.getUsrAge(),
+                orders
+            });
+        }
+    }//GEN-LAST:event_sortUsrButtonActionPerformed
+
+    private void searchUsrButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchUsrButtonActionPerformed
+        // TODO add your handling code here:
+        String searchName = JOptionPane.showInputDialog(this, "Enter User Name to Search:");
+
+        if (searchName == null || searchName.trim().isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Please enter a valid name.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        // Perform binary search on the user list
+        BinarySearch search = new BinarySearch();
+        List<UserModel> sortedUserList = new SelectionSort().sortByUserName(userList, false);  // Sort ascending
+        UserModel result = search.searchByName(searchName, sortedUserList, 0, sortedUserList.size() - 1);
+
+        if (result != null) {
+            JOptionPane.showMessageDialog(this, 
+                "User Found!\n\nID: " + result.getUsrId() + 
+                "\nName: " + result.getUsrName() +
+                "\nGender: " + result.getUsrSex() +
+                "\nAge: " + result.getUsrAge(), 
+                "Search Result", 
+                JOptionPane.INFORMATION_MESSAGE
+            );
+        } else {
+            JOptionPane.showMessageDialog(this, "User not found.", "Search Result", JOptionPane.WARNING_MESSAGE);
+        }
+    }//GEN-LAST:event_searchUsrButtonActionPerformed
+    
+    public static void main(String[] args) {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 new LogisticsApp().setVisible(true);
             }
         });
     }
+
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private java.awt.TextField PickUptextField;
@@ -1002,6 +1103,8 @@ public class LogisticsApp extends javax.swing.JFrame {
     private javax.swing.JButton logoutButton2;
     private javax.swing.JPasswordField passwordTextField;
     private javax.swing.JButton removeUserButton;
+    private javax.swing.JButton searchUsrButton;
+    private javax.swing.JButton sortUsrButton;
     private javax.swing.JPanel topPanel;
     private javax.swing.JPanel topPanel2;
     private javax.swing.JLabel truckImgLabel;
