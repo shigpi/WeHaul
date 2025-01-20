@@ -4,6 +4,10 @@
  */
 package com.truckLogisticApp.view;
 
+import com.truckLogisticApp.controller.algorithms.BinarySearch;
+import com.truckLogisticApp.controller.algorithms.InsertionSort;
+import com.truckLogisticApp.controller.algorithms.SelectionSort;
+import com.truckLogisticApp.controller.algorithms.MergeSort;
 import com.truckLogisticApp.model.OrderModel;
 import com.truckLogisticApp.model.UserModel;
 import com.truckLogisticApp.model.TruckModel;
@@ -13,6 +17,9 @@ import java.util.LinkedList;
 import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+import java.time.LocalDate;
+
+
 
 /**
  *
@@ -25,6 +32,7 @@ public class LogisticsApp extends javax.swing.JFrame {
     private java.awt.CardLayout cardLayout;
     private List<UserModel> userList;
     private List<TruckModel> truckList;
+    private UserModel loggedInUser = null;
     
     /**
      * Creates new form LogisticsApp
@@ -53,29 +61,44 @@ public class LogisticsApp extends javax.swing.JFrame {
         credentialPanel1 = new javax.swing.JPanel();
         jLabel5 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
-        PickUptextField = new java.awt.TextField();
+        pickUpTextField = new java.awt.TextField();
         jLabel7 = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
-        jButton2 = new javax.swing.JButton();
+        addOrderJButton = new javax.swing.JButton();
         dropOffTextField = new javax.swing.JTextField();
+        truckImgLabel1 = new javax.swing.JLabel();
         jPanel3 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        usrTable = new javax.swing.JTable();
         jPanel4 = new javax.swing.JPanel();
+        truckImgLabel2 = new javax.swing.JLabel();
+        jPanel5 = new javax.swing.JPanel();
+        jScrollPane5 = new javax.swing.JScrollPane();
+        jTextArea1 = new javax.swing.JTextArea();
+        jLabel10 = new javax.swing.JLabel();
         adminPanel = new javax.swing.JPanel();
         topPanel2 = new javax.swing.JPanel();
         logoIngLabel3 = new javax.swing.JLabel();
         logoutButton2 = new javax.swing.JButton();
         jTabbedPane2 = new javax.swing.JTabbedPane();
-        jPanel1 = new javax.swing.JPanel();
+        recentBookingPanel = new javax.swing.JPanel();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        recentBookingTable = new javax.swing.JTable();
+        userInfoPanle = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
         userTable = new javax.swing.JTable();
         removeUserButton = new javax.swing.JButton();
         addUserButton = new javax.swing.JButton();
         updateInfoButton = new javax.swing.JButton();
-        jPanel5 = new javax.swing.JPanel();
-        jScrollPane3 = new javax.swing.JScrollPane();
-        jTable2 = new javax.swing.JTable();
+        sortUsrButton = new javax.swing.JButton();
+        searchUsrButton = new javax.swing.JButton();
+        jPanel1 = new javax.swing.JPanel();
+        jScrollPane4 = new javax.swing.JScrollPane();
+        truckTable = new javax.swing.JTable();
+        assignTruckButton = new javax.swing.JButton();
+        searchTruckButton = new javax.swing.JButton();
+        addTruckButton = new javax.swing.JButton();
+        sortTruckButton = new javax.swing.JButton();
         loginPanel = new javax.swing.JPanel();
         truckImgLabel = new javax.swing.JLabel();
         credentialPanel = new javax.swing.JPanel();
@@ -91,15 +114,15 @@ public class LogisticsApp extends javax.swing.JFrame {
 
         userPanel.setBackground(new java.awt.Color(0, 0, 133));
 
-        topPanel.setBackground(new java.awt.Color(25, 34, 75));
+        topPanel.setBackground(new java.awt.Color(0, 0, 133));
 
         logoIngLabel1.setBackground(new java.awt.Color(0, 0, 133));
         logoIngLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/truckLogisticApp/resources/logo.png"))); // NOI18N
         logoIngLabel1.setText("jLabel5");
 
-        logoutButton.setBackground(new java.awt.Color(255, 255, 227));
+        logoutButton.setBackground(new java.awt.Color(0, 0, 133));
         logoutButton.setFont(new java.awt.Font("Helvetica Neue", 1, 24)); // NOI18N
-        logoutButton.setForeground(new java.awt.Color(25, 33, 75));
+        logoutButton.setForeground(new java.awt.Color(255, 255, 227));
         logoutButton.setText("LOG OUT");
         logoutButton.setBorderPainted(false);
         logoutButton.addActionListener(new java.awt.event.ActionListener() {
@@ -125,7 +148,12 @@ public class LogisticsApp extends javax.swing.JFrame {
                 .addComponent(logoutButton, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
+        jTabbedPane1.setBackground(new java.awt.Color(0, 0, 133));
+        jTabbedPane1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 255, 227)));
+        jTabbedPane1.setForeground(new java.awt.Color(255, 255, 227));
+
         jPanel2.setBackground(new java.awt.Color(0, 0, 133));
+        jPanel2.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
 
         credentialPanel1.setBackground(new java.awt.Color(84, 84, 84));
 
@@ -137,12 +165,12 @@ public class LogisticsApp extends javax.swing.JFrame {
         jLabel6.setForeground(new java.awt.Color(255, 255, 227));
         jLabel6.setText("LOCATION");
 
-        PickUptextField.setBackground(new java.awt.Color(255, 255, 227));
-        PickUptextField.setFont(new java.awt.Font("Helvetica Neue", 0, 14)); // NOI18N
-        PickUptextField.setText("");
-        PickUptextField.addActionListener(new java.awt.event.ActionListener() {
+        pickUpTextField.setBackground(new java.awt.Color(255, 255, 227));
+        pickUpTextField.setFont(new java.awt.Font("Helvetica Neue", 0, 14)); // NOI18N
+        pickUpTextField.setText("");
+        pickUpTextField.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                PickUptextFieldActionPerformed(evt);
+                pickUpTextFieldActionPerformed(evt);
             }
         });
 
@@ -154,14 +182,14 @@ public class LogisticsApp extends javax.swing.JFrame {
         jLabel8.setForeground(new java.awt.Color(255, 255, 227));
         jLabel8.setText("Drop Off Location:");
 
-        jButton2.setBackground(new java.awt.Color(255, 255, 227));
-        jButton2.setFont(new java.awt.Font("Helvetica Neue", 1, 24)); // NOI18N
-        jButton2.setForeground(new java.awt.Color(25, 33, 75));
-        jButton2.setText("Get Rates");
-        jButton2.setBorderPainted(false);
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
+        addOrderJButton.setBackground(new java.awt.Color(84, 84, 84));
+        addOrderJButton.setFont(new java.awt.Font("Helvetica Neue", 1, 24)); // NOI18N
+        addOrderJButton.setForeground(new java.awt.Color(255, 255, 227));
+        addOrderJButton.setText("Add Order");
+        addOrderJButton.setBorderPainted(false);
+        addOrderJButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
+                addOrderJButtonActionPerformed(evt);
             }
         });
 
@@ -177,19 +205,16 @@ public class LogisticsApp extends javax.swing.JFrame {
         credentialPanel1Layout.setHorizontalGroup(
             credentialPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(credentialPanel1Layout.createSequentialGroup()
-                .addGroup(credentialPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(credentialPanel1Layout.createSequentialGroup()
-                        .addGap(19, 19, 19)
-                        .addGroup(credentialPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel7)
-                            .addComponent(dropOffTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 263, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(PickUptextField, javax.swing.GroupLayout.PREFERRED_SIZE, 263, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel5)
-                            .addComponent(jLabel6)
-                            .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 127, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, credentialPanel1Layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jButton2)))
+                .addGap(19, 19, 19)
+                .addGroup(credentialPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(addOrderJButton, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(credentialPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(jLabel7)
+                        .addComponent(dropOffTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 263, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(pickUpTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 263, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel5)
+                        .addComponent(jLabel6)
+                        .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 127, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(0, 25, Short.MAX_VALUE))
         );
         credentialPanel1Layout.setVerticalGroup(
@@ -202,50 +227,61 @@ public class LogisticsApp extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 18, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(PickUptextField, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(pickUpTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(25, 25, 25)
                 .addComponent(jLabel8)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(dropOffTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 35, Short.MAX_VALUE)
-                .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(32, 32, 32))
+                .addGap(33, 33, 33)
+                .addComponent(addOrderJButton, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(34, Short.MAX_VALUE))
         );
+
+        truckImgLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/truckLogisticApp/resources/truck.png"))); // NOI18N
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addContainerGap(634, Short.MAX_VALUE)
+                .addGap(110, 110, 110)
+                .addComponent(truckImgLabel1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 176, Short.MAX_VALUE)
                 .addComponent(credentialPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(59, 59, 59))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(20, 20, 20)
-                .addComponent(credentialPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(28, Short.MAX_VALUE))
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGap(20, 20, 20)
+                        .addComponent(credentialPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGap(107, 107, 107)
+                        .addComponent(truckImgLabel1)))
+                .addContainerGap(20, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("Home", jPanel2);
 
         jPanel3.setBackground(new java.awt.Color(0, 0, 133));
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        usrTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null}
             },
             new String [] {
-                "Date", "Pick Up Location", "Drop Location", "Payment"
+                "Id", "Pick Up Location", "Drop Location", "Payment", "Date"
             }
         ));
-        jScrollPane1.setViewportView(jTable1);
+        usrTable.setEnabled(false);
+        usrTable.setShowGrid(false);
+        jScrollPane1.setViewportView(usrTable);
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -254,27 +290,80 @@ public class LogisticsApp extends javax.swing.JFrame {
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addGap(81, 81, 81)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 838, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(81, Short.MAX_VALUE))
+                .addContainerGap(79, Short.MAX_VALUE))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
-                .addContainerGap(33, Short.MAX_VALUE)
+                .addContainerGap(31, Short.MAX_VALUE)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 388, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(32, 32, 32))
         );
 
         jTabbedPane1.addTab("Your History", jPanel3);
 
+        jPanel4.setBackground(new java.awt.Color(0, 0, 133));
+
+        truckImgLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/truckLogisticApp/resources/truck.png"))); // NOI18N
+
+        jPanel5.setBackground(new java.awt.Color(84, 84, 84));
+
+        jTextArea1.setBackground(new java.awt.Color(84, 84, 84));
+        jTextArea1.setColumns(20);
+        jTextArea1.setForeground(new java.awt.Color(255, 255, 227));
+        jTextArea1.setRows(5);
+        jTextArea1.setText("At We Haul, we specialize in providing reliable and efficient truck rental \nservices to meet all your logistics and transportation needs. Whether you're \nmoving goods locally or transporting cargo over longer distances, we offer a \ndiverse fleet of well-maintained trucks, including pickup trucks, cargo vans, \nbox trucks, and stakebed trucks.\n\nOur fleet is designed to cater to businesses and individuals, offering trucks \nthat are both in-use and ready for your specific requirements. Each vehicle is\nmeticulously maintained, and we ensure all trucks are equipped with the \nlatest safety features to guarantee a smooth and secure transport \nexperience.\n\nAt We Haul, we prioritize customer satisfaction. Our streamlined ordering \nprocess makes it simple for you to select and assign the right truck for \nyour needs. Our easy-to-use platform, backed by a dedicated support \nteam, ensures that you get the right vehicle at the right time, so your \ntransportation needs are always met with ease.\n\nWhether you're handling a one-time project or looking for ongoing logistics \nsupport, We Haul is here to keep your business moving forward.");
+        jScrollPane5.setViewportView(jTextArea1);
+
+        jLabel10.setFont(new java.awt.Font("Helvetica Neue", 1, 24)); // NOI18N
+        jLabel10.setForeground(new java.awt.Color(255, 255, 227));
+        jLabel10.setText("About Us");
+
+        javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
+        jPanel5.setLayout(jPanel5Layout);
+        jPanel5Layout.setHorizontalGroup(
+            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel5Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(374, 374, 374))
+            .addGroup(jPanel5Layout.createSequentialGroup()
+                .addGap(22, 22, 22)
+                .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 488, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(25, Short.MAX_VALUE))
+        );
+        jPanel5Layout.setVerticalGroup(
+            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel5Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel10, javax.swing.GroupLayout.DEFAULT_SIZE, 34, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 361, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(14, 14, 14))
+        );
+
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
         jPanel4Layout.setHorizontalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1000, Short.MAX_VALUE)
+            .addGroup(jPanel4Layout.createSequentialGroup()
+                .addGap(43, 43, 43)
+                .addComponent(truckImgLabel2)
+                .addGap(59, 59, 59)
+                .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(21, Short.MAX_VALUE))
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 453, Short.MAX_VALUE)
+            .addGroup(jPanel4Layout.createSequentialGroup()
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel4Layout.createSequentialGroup()
+                        .addGap(104, 104, 104)
+                        .addComponent(truckImgLabel2))
+                    .addGroup(jPanel4Layout.createSequentialGroup()
+                        .addGap(14, 14, 14)
+                        .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(16, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("About Us", jPanel4);
@@ -295,17 +384,19 @@ public class LogisticsApp extends javax.swing.JFrame {
                 .addContainerGap())
         );
 
-        adminPanel.setBackground(new java.awt.Color(0, 0, 133));
+        adminPanel.setBackground(new java.awt.Color(255, 255, 227));
+        adminPanel.setMaximumSize(new java.awt.Dimension(1000, 600));
 
-        topPanel2.setBackground(new java.awt.Color(25, 34, 75));
+        topPanel2.setBackground(new java.awt.Color(0, 0, 133));
+        topPanel2.setToolTipText("");
 
         logoIngLabel3.setBackground(new java.awt.Color(0, 0, 133));
         logoIngLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/truckLogisticApp/resources/logo.png"))); // NOI18N
         logoIngLabel3.setText("jLabel5");
 
-        logoutButton2.setBackground(new java.awt.Color(255, 255, 227));
+        logoutButton2.setBackground(new java.awt.Color(0, 0, 133));
         logoutButton2.setFont(new java.awt.Font("Helvetica Neue", 1, 24)); // NOI18N
-        logoutButton2.setForeground(new java.awt.Color(25, 33, 75));
+        logoutButton2.setForeground(new java.awt.Color(255, 255, 227));
         logoutButton2.setText("LOG OUT");
         logoutButton2.setBorderPainted(false);
         logoutButton2.addActionListener(new java.awt.event.ActionListener() {
@@ -319,6 +410,7 @@ public class LogisticsApp extends javax.swing.JFrame {
         topPanel2Layout.setHorizontalGroup(
             topPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(topPanel2Layout.createSequentialGroup()
+                .addGap(19, 19, 19)
                 .addComponent(logoIngLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 202, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(logoutButton2)
@@ -333,9 +425,52 @@ public class LogisticsApp extends javax.swing.JFrame {
 
         jTabbedPane2.setBackground(new java.awt.Color(254, 254, 227));
         jTabbedPane2.setForeground(new java.awt.Color(0, 0, 133));
+        jTabbedPane2.setMaximumSize(new java.awt.Dimension(994, 508));
+        jTabbedPane2.setMinimumSize(new java.awt.Dimension(994, 508));
 
-        jPanel1.setBackground(new java.awt.Color(0, 0, 143));
+        recentBookingPanel.setBackground(new java.awt.Color(255, 255, 227));
+        recentBookingPanel.setToolTipText("");
 
+        recentBookingTable.setBackground(new java.awt.Color(0, 0, 133));
+        recentBookingTable.setForeground(new java.awt.Color(255, 255, 227));
+        recentBookingTable.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "UserID", "Date", "Pick Up", "Drop"
+            }
+        ));
+        recentBookingTable.setEnabled(false);
+        recentBookingTable.setGridColor(new java.awt.Color(255, 255, 227));
+        jScrollPane3.setViewportView(recentBookingTable);
+
+        javax.swing.GroupLayout recentBookingPanelLayout = new javax.swing.GroupLayout(recentBookingPanel);
+        recentBookingPanel.setLayout(recentBookingPanelLayout);
+        recentBookingPanelLayout.setHorizontalGroup(
+            recentBookingPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(recentBookingPanelLayout.createSequentialGroup()
+                .addGap(92, 92, 92)
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 812, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(90, Short.MAX_VALUE))
+        );
+        recentBookingPanelLayout.setVerticalGroup(
+            recentBookingPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(recentBookingPanelLayout.createSequentialGroup()
+                .addGap(28, 28, 28)
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 302, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(143, Short.MAX_VALUE))
+        );
+
+        jTabbedPane2.addTab("Recent Bookings", recentBookingPanel);
+
+        userInfoPanle.setBackground(new java.awt.Color(255, 255, 227));
+
+        userTable.setBackground(new java.awt.Color(0, 0, 133));
+        userTable.setForeground(new java.awt.Color(255, 255, 227));
         userTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
@@ -344,6 +479,11 @@ public class LogisticsApp extends javax.swing.JFrame {
                 "ID", "Name", "Sex", "Age"
             }
         ));
+        userTable.setToolTipText("");
+        userTable.setEnabled(false);
+        userTable.setGridColor(new java.awt.Color(255, 255, 227));
+        userTable.setSelectionBackground(new java.awt.Color(255, 255, 227));
+        userTable.setSelectionForeground(new java.awt.Color(0, 0, 133));
         jScrollPane2.setViewportView(userTable);
 
         removeUserButton.setBackground(new java.awt.Color(255, 255, 227));
@@ -379,68 +519,167 @@ public class LogisticsApp extends javax.swing.JFrame {
             }
         });
 
+        sortUsrButton.setBackground(new java.awt.Color(255, 255, 227));
+        sortUsrButton.setFont(new java.awt.Font("Helvetica Neue", 1, 24)); // NOI18N
+        sortUsrButton.setForeground(new java.awt.Color(25, 33, 75));
+        sortUsrButton.setText("Sort");
+        sortUsrButton.setBorderPainted(false);
+        sortUsrButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                sortUsrButtonActionPerformed(evt);
+            }
+        });
+
+        searchUsrButton.setBackground(new java.awt.Color(255, 255, 227));
+        searchUsrButton.setFont(new java.awt.Font("Helvetica Neue", 1, 24)); // NOI18N
+        searchUsrButton.setForeground(new java.awt.Color(25, 33, 75));
+        searchUsrButton.setText("Search");
+        searchUsrButton.setBorderPainted(false);
+        searchUsrButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                searchUsrButtonActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout userInfoPanleLayout = new javax.swing.GroupLayout(userInfoPanle);
+        userInfoPanle.setLayout(userInfoPanleLayout);
+        userInfoPanleLayout.setHorizontalGroup(
+            userInfoPanleLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(userInfoPanleLayout.createSequentialGroup()
+                .addGap(69, 69, 69)
+                .addGroup(userInfoPanleLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addGroup(userInfoPanleLayout.createSequentialGroup()
+                        .addComponent(removeUserButton)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(addUserButton, javax.swing.GroupLayout.PREFERRED_SIZE, 171, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(52, 52, 52)
+                        .addComponent(updateInfoButton, javax.swing.GroupLayout.PREFERRED_SIZE, 216, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(sortUsrButton, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 846, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(79, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, userInfoPanleLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(searchUsrButton, javax.swing.GroupLayout.PREFERRED_SIZE, 171, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(397, 397, 397))
+        );
+        userInfoPanleLayout.setVerticalGroup(
+            userInfoPanleLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(userInfoPanleLayout.createSequentialGroup()
+                .addGap(25, 25, 25)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 231, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(30, 30, 30)
+                .addGroup(userInfoPanleLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(removeUserButton, javax.swing.GroupLayout.PREFERRED_SIZE, 74, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(addUserButton, javax.swing.GroupLayout.PREFERRED_SIZE, 74, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(updateInfoButton, javax.swing.GroupLayout.PREFERRED_SIZE, 74, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(sortUsrButton, javax.swing.GroupLayout.PREFERRED_SIZE, 78, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(searchUsrButton, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(50, Short.MAX_VALUE))
+        );
+
+        jTabbedPane2.addTab("Users", userInfoPanle);
+
+        jPanel1.setBackground(new java.awt.Color(255, 255, 227));
+
+        truckTable.setBackground(new java.awt.Color(0, 0, 133));
+        truckTable.setForeground(new java.awt.Color(255, 255, 227));
+        truckTable.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "ID", "Type", "Make Year", "In Use"
+            }
+        ));
+        truckTable.setToolTipText("");
+        truckTable.setEnabled(false);
+        truckTable.setGridColor(new java.awt.Color(255, 255, 227));
+        truckTable.setSelectionBackground(new java.awt.Color(255, 255, 227));
+        truckTable.setSelectionForeground(new java.awt.Color(0, 0, 133));
+        jScrollPane4.setViewportView(truckTable);
+
+        assignTruckButton.setBackground(new java.awt.Color(255, 255, 227));
+        assignTruckButton.setFont(new java.awt.Font("Helvetica Neue", 1, 24)); // NOI18N
+        assignTruckButton.setForeground(new java.awt.Color(25, 33, 75));
+        assignTruckButton.setText("Assign Truck");
+        assignTruckButton.setBorderPainted(false);
+        assignTruckButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                assignTruckButtonActionPerformed(evt);
+            }
+        });
+
+        searchTruckButton.setBackground(new java.awt.Color(255, 255, 227));
+        searchTruckButton.setFont(new java.awt.Font("Helvetica Neue", 1, 24)); // NOI18N
+        searchTruckButton.setForeground(new java.awt.Color(25, 33, 75));
+        searchTruckButton.setText("Search");
+        searchTruckButton.setBorderPainted(false);
+        searchTruckButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                searchTruckButtonActionPerformed(evt);
+            }
+        });
+
+        addTruckButton.setBackground(new java.awt.Color(255, 255, 227));
+        addTruckButton.setFont(new java.awt.Font("Helvetica Neue", 1, 24)); // NOI18N
+        addTruckButton.setForeground(new java.awt.Color(25, 33, 75));
+        addTruckButton.setText("Add Truck");
+        addTruckButton.setBorderPainted(false);
+        addTruckButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                addTruckButtonActionPerformed(evt);
+            }
+        });
+
+        sortTruckButton.setBackground(new java.awt.Color(255, 255, 227));
+        sortTruckButton.setFont(new java.awt.Font("Helvetica Neue", 1, 24)); // NOI18N
+        sortTruckButton.setForeground(new java.awt.Color(25, 33, 75));
+        sortTruckButton.setText("Sort");
+        sortTruckButton.setBorderPainted(false);
+        sortTruckButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                sortTruckButtonActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(69, 69, 69)
+                .addGap(74, 74, 74)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(removeUserButton)
-                        .addGap(82, 82, 82)
-                        .addComponent(addUserButton, javax.swing.GroupLayout.PREFERRED_SIZE, 195, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(93, 93, 93)
-                        .addComponent(updateInfoButton, javax.swing.GroupLayout.PREFERRED_SIZE, 215, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 846, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(73, Short.MAX_VALUE))
+                        .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 846, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(0, 10, Short.MAX_VALUE)
+                        .addComponent(assignTruckButton)
+                        .addGap(61, 61, 61)
+                        .addComponent(searchTruckButton, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(67, 67, 67)
+                        .addComponent(addTruckButton, javax.swing.GroupLayout.PREFERRED_SIZE, 176, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(31, 31, 31)
+                        .addComponent(sortTruckButton, javax.swing.GroupLayout.PREFERRED_SIZE, 157, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(104, 104, 104))))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(25, 25, 25)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 231, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(57, 57, 57)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(removeUserButton, javax.swing.GroupLayout.DEFAULT_SIZE, 74, Short.MAX_VALUE)
-                    .addComponent(updateInfoButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(addUserButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap(80, Short.MAX_VALUE))
+                .addGap(46, 46, 46)
+                .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 289, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(32, 32, 32)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(assignTruckButton, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(searchTruckButton, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(addTruckButton, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(sortTruckButton, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(49, Short.MAX_VALUE))
         );
 
-        jTabbedPane2.addTab("Users", jPanel1);
-
-        jTable2.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
-            },
-            new String [] {
-                "UserID", "Date", "Pick Up", "Drop"
-            }
-        ));
-        jScrollPane3.setViewportView(jTable2);
-
-        javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
-        jPanel5.setLayout(jPanel5Layout);
-        jPanel5Layout.setHorizontalGroup(
-            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel5Layout.createSequentialGroup()
-                .addGap(92, 92, 92)
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 812, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(84, Short.MAX_VALUE))
-        );
-        jPanel5Layout.setVerticalGroup(
-            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel5Layout.createSequentialGroup()
-                .addGap(28, 28, 28)
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(12, Short.MAX_VALUE))
-        );
-
-        jTabbedPane2.addTab("Recent Bookings", jPanel5);
+        jTabbedPane2.addTab("Trucks", jPanel1);
 
         javax.swing.GroupLayout adminPanelLayout = new javax.swing.GroupLayout(adminPanel);
         adminPanel.setLayout(adminPanelLayout);
@@ -449,16 +688,14 @@ public class LogisticsApp extends javax.swing.JFrame {
             .addComponent(topPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(adminPanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jTabbedPane2)
-                .addContainerGap())
+                .addComponent(jTabbedPane2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         adminPanelLayout.setVerticalGroup(
             adminPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(adminPanelLayout.createSequentialGroup()
                 .addComponent(topPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jTabbedPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 502, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                .addComponent(jTabbedPane2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -506,9 +743,9 @@ public class LogisticsApp extends javax.swing.JFrame {
             }
         });
 
-        loginButton.setBackground(new java.awt.Color(255, 255, 227));
+        loginButton.setBackground(new java.awt.Color(84, 84, 84));
         loginButton.setFont(new java.awt.Font("Helvetica Neue", 1, 24)); // NOI18N
-        loginButton.setForeground(new java.awt.Color(25, 33, 75));
+        loginButton.setForeground(new java.awt.Color(255, 255, 227));
         loginButton.setText("LOGIN");
         loginButton.setBorderPainted(false);
         loginButton.addActionListener(new java.awt.event.ActionListener() {
@@ -639,76 +876,157 @@ public class LogisticsApp extends javax.swing.JFrame {
     }
     
     private void initializeData() {
+        // User Data + Order Data
         userList = new LinkedList<>();
 
         // Adding users with orders
         registerUser(new UserModel(1, "Alice", "Female", 25, 
             new ArrayList<>(Arrays.asList(
-                new OrderModel(101, "Kathmandu", "Pokhara"),
-                new OrderModel(102, "Lalitpur", "Bhaktapur")
+                new OrderModel(101, "Kathmandu", "Pokhara", LocalDate.of(2023, 1, 15)),
+                new OrderModel(102, "Lalitpur", "Bhaktapur", LocalDate.of(2023, 3, 10))
             ))
         ));
 
         registerUser(new UserModel(2, "Bob", "Male", 30, 
             new ArrayList<>(Arrays.asList(
-                new OrderModel(103, "Biratnagar", "Bhairahawa"),
-                new OrderModel(104, "Dhangadhi", "Nepalgunj")
+                new OrderModel(103, "Biratnagar", "Bhairahawa", LocalDate.of(2022, 11, 25)),
+                new OrderModel(104, "Dhangadhi", "Nepalgunj", LocalDate.of(2023, 4, 5))
             ))
         ));
 
         registerUser(new UserModel(3, "Charlie", "Male", 22, 
             new ArrayList<>(Arrays.asList(
-                new OrderModel(105, "Itahari", "Janakpur")
+                new OrderModel(105, "Itahari", "Janakpur", LocalDate.of(2021, 6, 18))
             ))
         ));
 
         registerUser(new UserModel(4, "Diana", "Female", 28, 
             new ArrayList<>(Arrays.asList(
-                new OrderModel(106, "Hetauda", "Butwal")
+                new OrderModel(106, "Hetauda", "Butwal", LocalDate.of(2020, 9, 12))
             ))
         ));
 
         registerUser(new UserModel(5, "Eve", "Female", 35, 
             new ArrayList<>(Arrays.asList(
-                new OrderModel(107, "Chitwan", "Kaski"),
-                new OrderModel(108, "Dang", "Rupandehi"),
-                new OrderModel(109, "Pokhara", "Syangja")
+                new OrderModel(107, "Chitwan", "Kaski", LocalDate.of(2022, 12, 5)),
+                new OrderModel(108, "Dang", "Rupandehi", LocalDate.of(2023, 2, 8)),
+                new OrderModel(109, "Pokhara", "Syangja", LocalDate.of(2021, 3, 22))
             ))
         ));
 
         registerUser(new UserModel(6, "Frank", "Male", 40, 
             new ArrayList<>(Arrays.asList(
-                new OrderModel(110, "Lumbini", "Tanahu")
+                new OrderModel(110, "Lumbini", "Tanahu", LocalDate.of(2020, 7, 14))
             ))
         ));
 
         registerUser(new UserModel(7, "Grace", "Female", 27, 
             new ArrayList<>(Arrays.asList(
-                new OrderModel(111, "Dharan", "Bhadrapur"),
-                new OrderModel(112, "Chandrapur", "Lahan")
+                new OrderModel(111, "Dharan", "Bhadrapur", LocalDate.of(2021, 11, 19)),
+                new OrderModel(112, "Chandrapur", "Lahan", LocalDate.of(2023, 5, 30))
             ))
         ));
 
         registerUser(new UserModel(8, "Henry", "Male", 33, 
             new ArrayList<>(Arrays.asList(
-                new OrderModel(113, "Pokhara", "Damauli"),
-                new OrderModel(114, "Kathmandu", "Bhaktapur")
+                new OrderModel(113, "Pokhara", "Damauli", LocalDate.of(2022, 8, 24)),
+                new OrderModel(114, "Kathmandu", "Bhaktapur", LocalDate.of(2023, 1, 10))
             ))
         ));
 
         registerUser(new UserModel(9, "Ivy", "Female", 29, 
             new ArrayList<>(Arrays.asList(
-                new OrderModel(115, "Birgunj", "Sunsari"),
-                new OrderModel(116, "Kavre", "Sindhuli")
+                new OrderModel(115, "Birgunj", "Sunsari", LocalDate.of(2020, 4, 16)),
+                new OrderModel(116, "Kavre", "Sindhuli", LocalDate.of(2021, 10, 28))
             ))
         ));
 
         registerUser(new UserModel(10, "Jack", "Male", 23, 
             new ArrayList<>(Arrays.asList(
-                new OrderModel(117, "Mahendranagar", "Baitadi"),
-                new OrderModel(118, "Ramechhap", "Dolakha")
+                new OrderModel(117, "Mahendranagar", "Baitadi", LocalDate.of(2022, 3, 11)),
+                new OrderModel(118, "Ramechhap", "Dolakha", LocalDate.of(2023, 6, 21))
             ))
         ));
+
+        populateRecentBookingsTable();
+        
+        // Truck Data
+        truckList = new ArrayList<>();
+
+        // Pickup Trucks
+        truckList.add(new TruckModel(1, "Standard Pickup", 2020, false, null));
+        truckList.add(new TruckModel(2, "1/2 Ton 4-Wheel Drive Pickup", 2021, true, 103)); 
+        truckList.add(new TruckModel(3, "3/4 Ton Pickup", 2019, false, null));
+        truckList.add(new TruckModel(4, "1 Ton Pickup", 2022, true, 104)); 
+        truckList.add(new TruckModel(5, "1/2 Ton 2-Wheel Drive Pickup", 2020, false, null));
+
+        // Cargo Vans
+        truckList.add(new TruckModel(6, "Compact Cargo Van", 2021, false, null));
+        truckList.add(new TruckModel(7, "Cargo Van", 2022, true, 107)); 
+        truckList.add(new TruckModel(8, "Heavy Duty Cargo Van", 2020, false, null));
+        truckList.add(new TruckModel(9, "Heavy Duty XL Cargo Van", 2021, true, 109)); 
+        truckList.add(new TruckModel(10, "High Roof Cargo Van", 2020, false, null));
+
+        // Box Trucks
+        truckList.add(new TruckModel(11, "15' Parcel Van", 2020, false, null));
+        truckList.add(new TruckModel(12, "15'-16' Parcel Van with Lift Gate", 2021, true, 101));
+        truckList.add(new TruckModel(13, "16' Cabover Truck", 2022, false, null));
+        truckList.add(new TruckModel(14, "20' Box Truck", 2020, true, 105)); 
+        truckList.add(new TruckModel(15, "24' Box Truck", 2019, false, null));
+        truckList.add(new TruckModel(16, "26' Box Truck", 2022, true, 110)); 
+
+        // Stakebed Trucks
+        truckList.add(new TruckModel(17, "12' Stakebed Truck", 2020, false, null));
+        truckList.add(new TruckModel(18, "16' Stakebed Truck", 2021, true, 106)); // User 6
+        truckList.add(new TruckModel(19, "24' Stakebed Truck", 2022, false, null));
+        
+        populateTruckTable();
+    }
+    
+    private void populateRecentBookingsTable() {
+        DefaultTableModel tableModel = (DefaultTableModel) recentBookingTable.getModel();
+        tableModel.setRowCount(0);
+
+        // Combine all orders from all users into a single list
+        List<OrderModel> allOrders = new ArrayList<>();
+        for (UserModel user : userList) {
+            for (OrderModel order : user.getUsrOrders()) {
+                allOrders.add(order);
+            }
+        }
+
+        // Sort the combined list by date
+        MergeSort mergeSort = new MergeSort();
+        mergeSort.sortByDateDescending(allOrders);
+
+        // Populate the table with sorted orders
+        for (OrderModel order : allOrders) {
+            tableModel.addRow(new Object[]{
+                order.getOrderId(),
+                order.getOrderDate().toString(),
+                order.getPickupLocation(),
+                order.getDropoffLocation()
+            });
+        }
+    }
+    
+    private void populateTruckTable() {
+        // Assuming truckTable is your JTable for displaying trucks
+        DefaultTableModel tableModel = (DefaultTableModel) truckTable.getModel();
+
+        // Clear existing rows to prevent duplicates
+        tableModel.setRowCount(0);
+
+        // Iterate through the truck list and populate rows
+        for (TruckModel truck : truckList) {
+            tableModel.addRow(new Object[]{
+                truck.getId(),                     // Truck ID
+                truck.getType(),                   // Truck Type
+                truck.getMakeYear(),               // Make Year
+                truck.isInUse() ? "Yes" : "No",    // In Use (Yes/No)
+                truck.isInUse() ? truck.getUserId() : "N/A" // User ID if in use, otherwise N/A
+            });
+        }
     }
 
     
@@ -750,9 +1068,12 @@ public class LogisticsApp extends javax.swing.JFrame {
         }
     }
     
-    private void addUser(int id, String name, String gender, int age, ArrayList<OrderModel> orders) {
+    private void addUser(String name, String gender, int age, ArrayList<OrderModel> orders) {
+        // Automatically generate a unique user ID
+        int newUserId = userList.isEmpty() ? 1 : userList.get(userList.size() - 1).getUsrId() + 1;
+
         // Create a new user object
-        UserModel newUser = new UserModel(id, name, gender, age, orders);
+        UserModel newUser = new UserModel(newUserId, name, gender, age, orders);
 
         // Add the user to the list
         userList.add(newUser);
@@ -826,16 +1147,42 @@ public class LogisticsApp extends javax.swing.JFrame {
             }
         } else {
             // User credentials
-            if (username.equals("user") && password.equals("password")) {
-                // Redirect to user dashboard or perform user-specific tasks
-                userPanel.setVisible(true);
-                loginPanel.setVisible(false);
+            boolean validUser = false;
+
+            // Iterate through the user list
+            for (UserModel user : userList) {
+                if (String.valueOf(user.getUsrId()).equals(username) && user.getUsrName().equalsIgnoreCase(password)) {
+                    validUser = true;
+                    loggedInUser = user;
+                    break;
+                }
+            }
+
+            if (validUser) {
                 
+                DefaultTableModel tableModel = (DefaultTableModel) usrTable.getModel();
+                tableModel.setRowCount(0); // Clear the table before adding new data
+
+                for (OrderModel order : loggedInUser.getUsrOrders()) {
+                    tableModel.addRow(new Object[]{
+                        order.getOrderId(),
+                        order.getPickupLocation(),
+                        order.getDropoffLocation(),
+                        "Not done",
+                        order.getOrderDate()
+                    });
+                }
+                    userPanel.setVisible(true);
+                loginPanel.setVisible(false);
                 JOptionPane.showMessageDialog(this, "Welcome User!", "Login Successful", JOptionPane.INFORMATION_MESSAGE);
             } else {
                 JOptionPane.showMessageDialog(this, "Invalid user credentials!", "Login Failed", JOptionPane.ERROR_MESSAGE);
             }
         }
+        
+        // Clear the text fields
+        usernameTextField.setText("");
+        passwordTextField.setText("");
     }//GEN-LAST:event_loginButtonActionPerformed
 
     private void passwordTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_passwordTextFieldActionPerformed
@@ -846,24 +1193,10 @@ public class LogisticsApp extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_usernameTextFieldActionPerformed
 
-    private void PickUptextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PickUptextFieldActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_PickUptextFieldActionPerformed
-
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton2ActionPerformed
-
-    private void dropOffTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_dropOffTextFieldActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_dropOffTextFieldActionPerformed
-
     private void logoutButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_logoutButtonActionPerformed
-        // TODO add your handling code here:
         userPanel.setVisible(false);
         loginPanel.setVisible(true);
-        JOptionPane.showMessageDialog(this, "Logout Successful", "Logging Out", JOptionPane.INFORMATION_MESSAGE);
-        
+        JOptionPane.showMessageDialog(this, "Logout Successful", "Logging Out", JOptionPane.INFORMATION_MESSAGE);    
     }//GEN-LAST:event_logoutButtonActionPerformed
 
     private void adminCheckBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_adminCheckBoxActionPerformed
@@ -897,29 +1230,50 @@ public class LogisticsApp extends javax.swing.JFrame {
     }//GEN-LAST:event_updateInfoButtonActionPerformed
 
     private void addUserButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addUserButtonActionPerformed
-        // TODO add your handling code here:
-        try {
-            // Show input dialogs to get user information
-            int id = Integer.parseInt(JOptionPane.showInputDialog("Enter User ID:"));
-            String name = JOptionPane.showInputDialog("Enter User Name:");
-            String gender = JOptionPane.showInputDialog("Enter User Gender (Male/Female):");
-            int age = Integer.parseInt(JOptionPane.showInputDialog("Enter User Age:"));
+        // Prompt for user input
+        String name = JOptionPane.showInputDialog(this, "Enter User Name:");
 
-            // Optional: Initialize orders (empty for now or customize as needed)
-            ArrayList<OrderModel> orders = new ArrayList<>();
-
-            // Call the addUser method
-            addUser(id, name, gender, age, orders);
-
-        } catch (NumberFormatException ex) {
-            JOptionPane.showMessageDialog(null, "Invalid input. Please enter valid numeric values for ID and Age.");
-        } catch (Exception ex) {
-            JOptionPane.showMessageDialog(null, "An error occurred: " + ex.getMessage());
+        if (name == null || name.trim().isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Name cannot be empty.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
         }
+
+        // Dropdown menu for gender selection
+        String[] genders = {"Male", "Female", "Others"};
+        String gender = (String) JOptionPane.showInputDialog(
+            this, 
+            "Select Gender:", 
+            "Gender Selection", 
+            JOptionPane.PLAIN_MESSAGE, 
+            null, 
+            genders, 
+            genders[0]
+        );
+
+        if (gender == null) {
+            JOptionPane.showMessageDialog(this, "Gender selection is required.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        // Prompt for age
+        String ageInput = JOptionPane.showInputDialog(this, "Enter User Age:");
+        int age;
+        try {
+            age = Integer.parseInt(ageInput);
+            if (age <= 0) {
+                JOptionPane.showMessageDialog(this, "Age must be positive.", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, "Invalid age input. Please enter a number.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        // Call the addUser method with generated ID and selected gender
+        addUser(name, gender, age, new ArrayList<>());
     }//GEN-LAST:event_addUserButtonActionPerformed
 
     private void removeUserButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_removeUserButtonActionPerformed
-        // TODO add your handling code here:
         String input = JOptionPane.showInputDialog("Enter User ID to remove:");
         try {
             int userID = Integer.parseInt(input);
@@ -929,34 +1283,374 @@ public class LogisticsApp extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_removeUserButtonActionPerformed
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(LogisticsApp.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(LogisticsApp.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(LogisticsApp.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(LogisticsApp.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+    private void sortUsrButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sortUsrButtonActionPerformed
+        // Check if userList is empty
+        if (userList.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "No users to sort.");
+            return;
         }
-        //</editor-fold>
 
-        /* Create and display the form */
+        String[] options = {"Sort by ID", "Sort by Name"};
+        String selectedCriteria = (String) JOptionPane.showInputDialog(
+            this, 
+            "Select Sorting Criteria:", 
+            "Sorting Options", 
+            JOptionPane.PLAIN_MESSAGE, 
+            null, 
+            options, 
+            options[0]
+        );
+
+        if (selectedCriteria == null) {
+            return;
+        }
+
+        int orderSelection = JOptionPane.showConfirmDialog(
+            this, 
+            "Sort in Descending Order?", 
+            "Sorting Order", 
+            JOptionPane.YES_NO_OPTION
+        );
+        boolean isDescending = (orderSelection == JOptionPane.YES_OPTION);
+
+        // Initialize sortedData to avoid "might not be initialized" error
+        List<UserModel> sortedData = new ArrayList<>();
+
+        SelectionSort sorter = new SelectionSort();
+        if (selectedCriteria.equals("Sort by ID")) {
+            sortedData = sorter.sortByUserId(userList, isDescending);
+        } else if (selectedCriteria.equals("Sort by Name")) {
+            sortedData = sorter.sortByUserName(userList, isDescending);
+        }
+
+        DefaultTableModel tableModel = (DefaultTableModel) userTable.getModel();
+        tableModel.setRowCount(0);  // Clear the table before re-populating
+
+        for (UserModel user : sortedData) {
+            String orders = user.getUsrOrders().stream()
+                .map(order -> order.getPickupLocation() + " to " + order.getDropoffLocation())
+                .reduce((o1, o2) -> o1 + ", " + o2)
+                .orElse("No Orders");
+
+            tableModel.addRow(new Object[]{
+                user.getUsrId(),
+                user.getUsrName(),
+                user.getUsrSex(),
+                user.getUsrAge(),
+                orders
+            });
+        }
+    }//GEN-LAST:event_sortUsrButtonActionPerformed
+
+    private void searchUsrButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchUsrButtonActionPerformed
+        // Prompt the user for a search name
+        String searchName = JOptionPane.showInputDialog(this, "Enter User Name to Search:");
+
+        if (searchName == null) {
+            JOptionPane.showMessageDialog(this, "Please enter a valid name.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        // Sort the user list by name to prepare for binary search
+        List<UserModel> sortedUserList = new SelectionSort().sortByUserName(userList, false);  // Sort ascending
+
+        // Find all users with the given name
+        List<UserModel> matchingUsers = new ArrayList<>();
+        for (UserModel user : sortedUserList) {
+            if (user.getUsrName().toLowerCase().equals(searchName.toLowerCase())) {
+                matchingUsers.add(user);
+            }
+        }
+
+        // Display the results
+        if (!matchingUsers.isEmpty()) {
+            StringBuilder resultMessage = new StringBuilder("Users Found:\n\n");
+            for (UserModel user : matchingUsers) {
+                resultMessage.append("ID: ").append(user.getUsrId())
+                             .append("\nName: ").append(user.getUsrName())
+                             .append("\nGender: ").append(user.getUsrSex())
+                             .append("\nAge: ").append(user.getUsrAge())
+                             .append("\n\n");
+            }
+
+            JOptionPane.showMessageDialog(this, resultMessage.toString(), "Search Results", JOptionPane.INFORMATION_MESSAGE);
+        } else {
+            JOptionPane.showMessageDialog(this, "No users found with the name: " + searchName, "Search Result", JOptionPane.WARNING_MESSAGE);
+        }
+    }//GEN-LAST:event_searchUsrButtonActionPerformed
+
+    private void searchTruckButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchTruckButtonActionPerformed
+        // Prompt the user for Truck/Order ID
+        String searchInput = JOptionPane.showInputDialog(this, "Enter Truck ID or Order ID to Search:");
+
+        if (searchInput == null || searchInput.trim().isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Please enter a valid input.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        try {
+            int searchValue = Integer.parseInt(searchInput);
+
+            // Ask user whether to search by truckId or orderId
+            int searchType = JOptionPane.showConfirmDialog(this, 
+                "Search by Order ID? (No for Truck ID)", 
+                "Search Type", 
+                JOptionPane.YES_NO_OPTION);
+
+            boolean searchByOrderId = (searchType == JOptionPane.YES_OPTION);
+
+            // Sort the list based on the selected search type
+            if (searchByOrderId) {
+                truckList.sort((t1, t2) -> {
+                    Integer o1 = t1.getUserId() == null ? -1 : t1.getUserId();
+                    Integer o2 = t2.getUserId() == null ? -1 : t2.getUserId();
+                    return o1.compareTo(o2);
+                });
+            } else {
+                truckList.sort((t1, t2) -> Integer.compare(t1.getId(), t2.getId()));
+            }
+
+            // Perform binary search
+            BinarySearch search = new BinarySearch();
+            TruckModel result = search.searchTruck(searchValue, truckList, 0, truckList.size() - 1, searchByOrderId);
+
+            if (result != null) {
+                JOptionPane.showMessageDialog(this, 
+                    "Truck Found!\n\nID: " + result.getId() + 
+                    "\nType: " + result.getType() +
+                    "\nMake Year: " + result.getMakeYear() +
+                    "\nIn Use: " + result.isInUse() +
+                    "\nOrder ID: " + (result.getUserId() != null ? result.getUserId() : "None"), 
+                    "Search Result", 
+                    JOptionPane.INFORMATION_MESSAGE
+                );
+            } else {
+                JOptionPane.showMessageDialog(this, "Truck not found.", "Search Result", JOptionPane.WARNING_MESSAGE);
+            }
+        } catch (NumberFormatException ex) {
+            JOptionPane.showMessageDialog(this, "Please enter a valid numeric ID.", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_searchTruckButtonActionPerformed
+
+    private void addTruckButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addTruckButtonActionPerformed
+        // Auto-assign Truck ID
+        int truckId = truckList.size() + 1;
+
+        // Input for Truck Type (Drop-down menu)
+        String[] truckTypes = {"Pickup Trucks", "Cargo Van", "Box Truck", "Stakebed Trucks"};
+        String type = (String) JOptionPane.showInputDialog(this, "Select Truck Type:", "Truck Type",
+                JOptionPane.QUESTION_MESSAGE, null, truckTypes, truckTypes[0]);
+
+        if (type == null) {
+            JOptionPane.showMessageDialog(this, "Truck type is required.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        // Input for Make Year
+        String makeYearInput = JOptionPane.showInputDialog(this, "Enter Make Year (e.g., 2020):");
+        if (makeYearInput == null || makeYearInput.trim().isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Make Year is required.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        int makeYear;
+        try {
+            makeYear = Integer.parseInt(makeYearInput);
+        } catch (NumberFormatException ex) {
+            JOptionPane.showMessageDialog(this, "Make Year must be a valid number.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        // Set default values for inUse and orderId
+        boolean inUse = false;
+        Integer orderId = null;
+
+        // Create new TruckModel object
+        TruckModel newTruck = new TruckModel(truckId, type, makeYear, inUse, orderId);
+
+        // Add to truck list and update the table
+        truckList.add(newTruck);
+        populateTruckTable();
+
+        JOptionPane.showMessageDialog(this, "Truck added successfully!", "Success", JOptionPane.INFORMATION_MESSAGE);
+    }//GEN-LAST:event_addTruckButtonActionPerformed
+
+    private void sortTruckButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sortTruckButtonActionPerformed
+        // Check if the truck list is empty
+        if (truckList.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "No trucks to sort.", "Info", JOptionPane.INFORMATION_MESSAGE);
+            return;
+        }
+
+        // Prompt the user for sorting order (ascending or descending)
+        int sortOrder = JOptionPane.showConfirmDialog(this, "Sort by Make Year in ascending order?", "Sorting Order", JOptionPane.YES_NO_CANCEL_OPTION);
+        if (sortOrder == JOptionPane.CANCEL_OPTION || sortOrder == JOptionPane.CLOSED_OPTION) {
+            return; // User canceled the operation
+        }
+
+        boolean ascending = (sortOrder == JOptionPane.YES_OPTION);
+
+        // Perform sorting using InsertionSort
+        InsertionSort sorter = new InsertionSort();
+        truckList = sorter.sortByMakeYear(truckList, ascending);
+
+        // Update the truck table with the sorted list
+        populateTruckTable();
+
+        // Notify the user that sorting is complete
+        String order = ascending ? "ascending" : "descending";
+        JOptionPane.showMessageDialog(this, "Trucks sorted by Make Year in " + order + " order.", "Success", JOptionPane.INFORMATION_MESSAGE);
+    }//GEN-LAST:event_sortTruckButtonActionPerformed
+
+    private void assignTruckButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_assignTruckButtonActionPerformed
+        // Filter the list of trucks to get those that are not in use
+        List<TruckModel> availableTrucks = new ArrayList<>();
+        for (TruckModel truck : truckList) {
+            if (!truck.isInUse()) {
+                availableTrucks.add(truck);
+            }
+        }
+
+        // Check if there are no available trucks
+        if (availableTrucks.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "No available trucks to assign.", "Info", JOptionPane.INFORMATION_MESSAGE);
+            return;
+        }
+
+        // Create a dropdown menu for available trucks
+        TruckModel selectedTruck = (TruckModel) JOptionPane.showInputDialog(
+            this,
+            "Select a Truck:",
+            "Assign Truck",
+            JOptionPane.QUESTION_MESSAGE,
+            null,
+            availableTrucks.toArray(),
+            availableTrucks.get(0)
+        );
+
+        if (selectedTruck == null) {
+            JOptionPane.showMessageDialog(this, "No truck selected.", "Info", JOptionPane.INFORMATION_MESSAGE);
+            return;
+        }
+
+        // Filter the list of orders to get those with pending status
+        List<OrderModel> pendingOrders = new ArrayList<>();
+        
+        // Iterate through all users and their orders
+        for (UserModel user : userList) {
+            List<OrderModel> orders = user.getUsrOrders();
+
+            for (OrderModel order : orders) {
+                if (!order.getCompletionStatus()) {
+                pendingOrders.add(order);
+            }
+            }
+        }
+
+        // Check if there are no pending orders
+        if (pendingOrders.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "No pending orders to assign.", "Info", JOptionPane.INFORMATION_MESSAGE);
+            return;
+        }
+
+        // Create a dropdown menu for pending orders
+        OrderModel selectedOrder = (OrderModel) JOptionPane.showInputDialog(
+            this,
+            "Select an Order:",
+            "Assign Order",
+            JOptionPane.QUESTION_MESSAGE,
+            null,
+            pendingOrders.toArray(),
+            pendingOrders.get(0)
+        );
+
+        if (selectedOrder == null) {
+            JOptionPane.showMessageDialog(this, "No order selected.", "Info", JOptionPane.INFORMATION_MESSAGE);
+            return;
+        }
+
+        // Confirmation dialog
+        int confirm = JOptionPane.showConfirmDialog(
+            this,
+            "Confirm Assignment:\n\nTruck ID: " + selectedTruck.getId() +
+            "\nTruck Type: " + selectedTruck.getType() +
+            "\n\nOrder ID: " + selectedOrder.getOrderId() +
+            "\nPickup Location: " + selectedOrder.getPickupLocation() +
+            "\nDropoff Location: " + selectedOrder.getDropoffLocation(),
+            "Confirm Assignment",
+            JOptionPane.YES_NO_OPTION
+        );
+
+        if (confirm == JOptionPane.YES_OPTION) {
+            // Assign the truck to the order
+            selectedTruck.setInUse(true);
+            selectedTruck.setOrderId(selectedOrder.getOrderId());
+            populateTruckTable(); // Refresh the truck table to show updated status
+
+            JOptionPane.showMessageDialog(this, "Truck successfully assigned to the order.", "Success", JOptionPane.INFORMATION_MESSAGE);
+        } else {
+            JOptionPane.showMessageDialog(this, "Assignment canceled.", "Info", JOptionPane.INFORMATION_MESSAGE);
+        }
+    }//GEN-LAST:event_assignTruckButtonActionPerformed
+
+    private void dropOffTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_dropOffTextFieldActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_dropOffTextFieldActionPerformed
+
+    private void addOrderJButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addOrderJButtonActionPerformed
+        // Get pickup and dropoff locations from text fields
+        String pickupLocation = pickUpTextField.getText();
+        String dropoffLocation = dropOffTextField.getText();
+
+        // Validate input
+        if (pickupLocation.isEmpty() || dropoffLocation.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Both pickup and dropoff locations are required.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        // LoggedInUser is the current user object used to display usrTable
+        if (loggedInUser != null) {
+            // Generate a unique order ID 
+            int newOrderId = loggedInUser.getUsrOrders().size() + 1 + 100; 
+
+            // Create a new OrderModel object with the current date
+            OrderModel newOrder = new OrderModel(newOrderId, pickupLocation, dropoffLocation, java.time.LocalDate.now());
+
+            // Add the new order to the logged-in user's orders list
+            loggedInUser.getUsrOrders().add(newOrder);
+
+            // Update the usrTable to reflect the new order
+            DefaultTableModel tableModel = (DefaultTableModel) usrTable.getModel();
+            tableModel.setRowCount(0); // Clear the table before adding new data
+
+            for (OrderModel order : loggedInUser.getUsrOrders()) {
+                tableModel.addRow(new Object[]{
+                    order.getOrderId(),
+                    order.getPickupLocation(),
+                    order.getDropoffLocation(),
+                    "Not done",
+                    order.getOrderDate()
+                });
+            }
+            
+            populateRecentBookingsTable();
+
+            // Display success message
+            JOptionPane.showMessageDialog(this, "Order added successfully!", "Success", JOptionPane.INFORMATION_MESSAGE);
+
+            // Clear the input fields
+            pickUpTextField.setText("");
+            dropOffTextField.setText("");
+        } else {
+            JOptionPane.showMessageDialog(this, "No logged-in user found. Please log in again.", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_addOrderJButtonActionPerformed
+
+    private void pickUpTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pickUpTextFieldActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_pickUpTextFieldActionPerformed
+    
+    public static void main(String[] args) {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 new LogisticsApp().setVisible(true);
@@ -964,16 +1658,20 @@ public class LogisticsApp extends javax.swing.JFrame {
         });
     }
 
+
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private java.awt.TextField PickUptextField;
+    private javax.swing.JButton addOrderJButton;
+    private javax.swing.JButton addTruckButton;
     private javax.swing.JButton addUserButton;
     private javax.swing.JCheckBox adminCheckBox;
     private javax.swing.JPanel adminPanel;
+    private javax.swing.JButton assignTruckButton;
     private javax.swing.JPanel credentialPanel;
     private javax.swing.JPanel credentialPanel1;
     private javax.swing.JTextField dropOffTextField;
-    private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -989,10 +1687,11 @@ public class LogisticsApp extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JScrollPane jScrollPane4;
+    private javax.swing.JScrollPane jScrollPane5;
     private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JTabbedPane jTabbedPane2;
-    private javax.swing.JTable jTable1;
-    private javax.swing.JTable jTable2;
+    private javax.swing.JTextArea jTextArea1;
     private javax.swing.JButton loginButton;
     private javax.swing.JPanel loginPanel;
     private javax.swing.JLabel logoIngLabel;
@@ -1001,13 +1700,25 @@ public class LogisticsApp extends javax.swing.JFrame {
     private javax.swing.JButton logoutButton;
     private javax.swing.JButton logoutButton2;
     private javax.swing.JPasswordField passwordTextField;
+    private java.awt.TextField pickUpTextField;
+    private javax.swing.JPanel recentBookingPanel;
+    private javax.swing.JTable recentBookingTable;
     private javax.swing.JButton removeUserButton;
+    private javax.swing.JButton searchTruckButton;
+    private javax.swing.JButton searchUsrButton;
+    private javax.swing.JButton sortTruckButton;
+    private javax.swing.JButton sortUsrButton;
     private javax.swing.JPanel topPanel;
     private javax.swing.JPanel topPanel2;
     private javax.swing.JLabel truckImgLabel;
+    private javax.swing.JLabel truckImgLabel1;
+    private javax.swing.JLabel truckImgLabel2;
+    private javax.swing.JTable truckTable;
     private javax.swing.JButton updateInfoButton;
+    private javax.swing.JPanel userInfoPanle;
     private javax.swing.JPanel userPanel;
     private javax.swing.JTable userTable;
     private java.awt.TextField usernameTextField;
+    private javax.swing.JTable usrTable;
     // End of variables declaration//GEN-END:variables
 }
